@@ -1,9 +1,9 @@
 package com.Kishore.Form.Controller;
 
-import com.Kishore.Form.Entity.UserDetails;
+import com.Kishore.Form.Entity.Employee;
 import com.Kishore.Form.Exception.UserNotFound;
 import com.Kishore.Form.Repository.UserRepository;
-import com.Kishore.Form.Service.UserDetailsService;
+import com.Kishore.Form.Service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,11 +11,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/v1")
 public class UserDetailsControllers {
 
         @Autowired
-        UserDetailsService service;
+        EmployeeService service;
         @Autowired
         UserRepository repo;
 
@@ -30,8 +30,8 @@ public class UserDetailsControllers {
         }
 
         @PostMapping("/addUser")
-        public ResponseEntity<?> saveUser(@RequestBody UserDetails user) throws UserNotFound {
-            Optional<UserDetails> opt = repo.findByUsername(user.getUsername());
+        public ResponseEntity<?> saveUser(@RequestBody Employee user) throws UserNotFound {
+            Optional<Employee> opt = repo.findByUsername(user.getUsername());
             if (opt.isPresent()) {
                 throw new UserNotFound("User is already existed");
             } else {
@@ -42,7 +42,7 @@ public class UserDetailsControllers {
         }
 
         @PutMapping("/updateUser/{id}")
-        public ResponseEntity<?> UpdateUser(@RequestBody UserDetails user) throws UserNotFound {
+        public ResponseEntity<?> UpdateUser(@RequestBody Employee user) throws UserNotFound {
             if (repo.existsById(user.getId())) {
                 service.updateUser(user);
                 return new ResponseEntity<>("id" + user.getId() + "is updated successfully", HttpStatus.ACCEPTED);
@@ -54,7 +54,7 @@ public class UserDetailsControllers {
 
         @DeleteMapping("/delete/{id}")
         public ResponseEntity<?> deleteUser(@PathVariable("id") int id) throws UserNotFound {
-            Optional<UserDetails> opt = repo.findById(id);
+            Optional<Employee> opt = repo.findById(id);
             if (opt.isPresent()) {
                 service.deleteUser(id);
                 return new ResponseEntity<>("id" + "deleted successfully", HttpStatus.OK);

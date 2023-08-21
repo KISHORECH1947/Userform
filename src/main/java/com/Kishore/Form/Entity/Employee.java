@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Entity
 @Table(name = "Users")
-public class UserDetails {
+public class Employee {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
